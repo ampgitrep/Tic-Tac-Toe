@@ -1,60 +1,48 @@
 import { useState } from "react";
 
-const newButtonText = (p) => {
-    if(p === "Player1"){
-        return "X";
-    }
+const checkXOrO = (getSquare) => {
+  if (getSquare === "X") {
     return "O";
-}
-const playerIsActive = (a) => {
-    if(a === "Player1"){
-        return "Player2"
-    }
-    return "Player1"
+  }
+  return "X";
 };
 
-const Button = ({ buttonXOrO, player, buttonState }) => {
-const [name, setName] = useState("--");
-const [clickState, setClickState] = useState(buttonState);;
-const [playerActive, setPlayerActive] = useState(player);
-
-const changeText = () => {
-    const currentState = buttonXOrO(newState(clickState));
-    setClickState(currentState); 
-    display();
-    handleActivePlayer();
-}
-const handleActivePlayer = () => {
-    const isActive = playerIsActive(playerActive);
-    setPlayerActive(isActive);
-    console.log(playerActive)
-    }
+const Button = ({ clickedSquare, xOrOStatus }) => {
+  const [xOrO, setXOrO] = useState(null);
+  xOrOStatus = checkXOrO(xOrOStatus);
+  
+  const isXOrO = (xOrO) => {
+      const nextChoice = checkXOrO(xOrO);
+      setXOrO(nextChoice);
+    };
     
+    const buttonText = (xOrO) => {
+        if(xOrO === null){
+            return " ";
+        }
+        return xOrO;
+    };
+    const showButton = buttonText(xOrO);
+  const handleClick = () => {
+    isXOrO();
 
-const display = () => {
-const newName = newButtonText(name);
-setName(newName);
-}
-
-const newState = (currentStatus) => {
-    return currentStatus;
-}
-const returnName = (newName) => {
-    return newName;
-}
-
-return (
-        <button 
-            onClick={changeText}
-            style={{
-                paddingTop:"44px",
-                fontSize: "32px",
-                paddingBottom:"44px",
-                paddingRight:"44px",
-                paddingLeft:"44px",
-        }}>{buttonState}
-        </button>
-    )
-}
+  };
+  console.log(buttonText());
+  return (
+    <button
+      onClick={handleClick}
+      style={{
+        paddingTop: "44px",
+        fontSize: "32px",
+        paddingBottom: "44px",
+        paddingRight: "44px",
+        paddingLeft: "44px",
+      }}
+    >
+      {showButton}
+    </button>
+  );
+};
 
 export default Button;
+
