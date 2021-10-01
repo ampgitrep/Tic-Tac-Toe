@@ -1,8 +1,5 @@
-import { useState } from "react";
 import './App.css';
 import Game from "./Game";
-import Display from "./Display";
-
 
 function App() {
 
