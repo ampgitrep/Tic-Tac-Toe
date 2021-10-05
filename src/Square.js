@@ -8,11 +8,13 @@ const getXOrO = (changePlayer) => {
   return "O";
   }return " ";
 }
+//who am i and what is my value? and how do I report interactions up to my boss
 
+//find a way to use square to reset the game after game over
 const Square = ({ activePlayer, nextPlayer, setGameState, row, cell }) => {
-  const [xOrO, setXOrO] = useState(null);
-  const newPlayer = nextPlayer;
-  const gameState = setGameState;
+ // const [xOrO, setXOrO] = useState(null);
+//  const newPlayer = nextPlayer;
+  //const gameState = setGameState;
 
   const changeXOrO = () => {
     const newXOrO = getXOrO(activePlayer);

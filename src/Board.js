@@ -7,8 +7,8 @@ const changePlayer = (newPlayer) => {
   }
   return "player1";
 };
-
-const Board = ({ getGameState, }) => {
+//board just gives squares IDs
+const Board = ({ reportClickedSquare, currentGameState }) => {
   const [currentPlayer, setCurrentPlayer] = useState("player1");
   const [gameState, setGameState] = useState([
     " ",
@@ -27,8 +27,14 @@ const Board = ({ getGameState, }) => {
     setCurrentPlayer(newPlayer);
     
   };
-    const currentGameState = getGameState;
 
+
+  if ([] === [] || {} === {}) {
+    console.log('down is up');
+  }
+  
+  // JavaScript primitives are all numbers, all strings, null, undefined, true, false
+  //iterate through these rows and "squares" loops in loops, start in inside square (for loops)
   const row1 = [];
   const row2 = [];
   const row3 = [];
@@ -44,21 +50,20 @@ const Board = ({ getGameState, }) => {
   }
 
 
-
   const handleGameState = (row, cell, clicked) => {
     row.splice(cell, 1, clicked);
-    setGameState([
-      row1[0],
-      row1[1],
-      row1[2],
-      row2[0],
-      row2[1],
-      row2[2],
-      row3[0],
-      row3[1],
-      row3[2],
-    ]);
-    currentGameState(
+    // setGameState([
+    //   row1[0],
+    //   row1[1],
+    //   row1[2],
+    //   row2[0],
+    //   row2[1],
+    //   row2[2],
+    //   row3[0],
+    //   row3[1],
+    //   row3[2],
+    // ]);
+    updateGameState(
       [
       row1[0],
       row1[1],
@@ -74,15 +79,27 @@ const Board = ({ getGameState, }) => {
   };
 
   return (
-
+    // Research Array.prototype.map = returns a new array thats created by running the passed function on every element of the original array
     <table>
+    {[row1, row2, row3].map(function (currentRow) {
+      return (
+        <tr>
+          {currentRow.map((value, index) => {
+            <Square value={value} index={index} />
+          })}
+        </tr>
+      );
+    }}
     <tr>
     <td><Square
-        row={row1}
-        cell={0}
-        nextPlayer={getNewPlayer}
-        activePlayer={currentPlayer}
-        setGameState={handleGameState}
+        onClick={reportClickedSquare}
+        id={id}
+        value={value}
+        // row={row1}
+        // cell={0}
+        // nextPlayer={getNewPlayer}
+        // activePlayer={currentPlayer}
+        // setGameState={handleGameState}
       />
     </td>
     <td><Square
