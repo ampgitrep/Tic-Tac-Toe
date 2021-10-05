@@ -2,27 +2,26 @@ import { useState } from "react";
 import Square from "./Square";
 
 //board just gives squares IDs
-const Board = ({ id, value, onClick, reportClickedSquare, gameState }) => {
-  
-
+const Board = ({  value, onClick, reportClickedSquare, gameState, id }) => {
 
   // JavaScript primitives are all numbers, all strings, null, undefined, true, false
   //iterate through these rows and "squares" loops in loops, start in inside square (for loops)
 
-
+  const newId = id();
   const row1 = [[], [], []];
   const row2 = [[], [], []];
   const row3 = [[], [], []];
   
   const increaseByOne = () => {
-    id = id + 1;
-    return id;
+    const currentId = id + 1;
+    const  newId = id(currentId)
+    return newId;
   }
   
   [row1, row2, row3].forEach(arr => {
     arr.forEach(obj => {
-      const newId = increaseByOne();
-      obj.push(gameState[newId-1]);
+      const id  = increaseByOne()
+      obj.push(gameState[id]);
     })
   })
 
@@ -38,7 +37,7 @@ const Board = ({ id, value, onClick, reportClickedSquare, gameState }) => {
               {currentRow.map((value, index) => {
                 return (
                   <td>  
-                    <Square value={value} id={index} onClick={onClick}/>
+                    <Square value={value} id={id} onClick={onClick}/>
                   </td>
                 );
               })}

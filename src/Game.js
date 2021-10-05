@@ -2,7 +2,7 @@ import { useState } from "react";
 import Board from "./Board";
 
 const currentPlayerToggle = (currentPlayer) => {
-  if(currentPlayer === "X"){
+  if (currentPlayer === "X") {
     return "O";
   }
   return "X";
@@ -12,7 +12,7 @@ const currentPlayerToggle = (currentPlayer) => {
 // Make sure to read the docs on forEach (MDN)
 // targetArray.forEach(iteratorFn);
 // const alexsForEach = (targetArray, iteratorFn) => {
-  
+
 // };
 // alexsforEach(myArray, someFn);
 // alexsForEach(myOtherArray, myOtherFn);
@@ -63,97 +63,104 @@ const winConditions = [
 
 //track gamestate in Game as the 'single source of truth'
 const Game = () => {
-  const [gameState, setGameStatus] = useState([null, null, null, null, null, null, null, null, null, ])
+  const [gameState, setGameStatus] = useState([null, null, null, null, null, null, null, null, null,])
   const [currentPlayer, setCurrentPlayer] = useState("X");
   const [gameOver, setGameOver] = useState(false);
-
-  let id = 0;
-  const onClick = () => {
-    console.log('hi');
-    changeCurrentPlayer();
-    console.log(currentPlayer);
-    setGameStatus(currentPlayer);
-  }
+  const [id, setId] = useState(0);
   const changeCurrentPlayer = () => {
     // Toggles between players.
     const nextPlayer = currentPlayerToggle(currentPlayer);
     setCurrentPlayer(nextPlayer);
   }
-  
-  // const checkIsGameWon = (currentGameState) => {
 
-  //   const checkInnerArray = (innerArray) => {
-  //     if(innerArray.every(e => e === innerArray[0])){
-  //       setGameOver(true);
-  //       }
-  //     }
+  const checkIsGameWon = (currentGameState) => {
 
-  //   const checkOuterArray = (outerArray) => {
-  //     return outerArray.forEach(checkInnerArray);
+    const checkInnerArray = (innerArray) => {
+      if(innerArray !==null){
+      if (innerArray.every(e => e === innerArray[0])) {
+        setGameOver(true);
+      }
+    }
+    }
+    const checkOuterArray = (outerArray) => {
+      return outerArray.forEach(checkInnerArray);
+    }
+    
+    checkOuterArray(currentGameState);
+  }
+
+  const checkIsGameOver = (currentGameState) => {
+    if(currentGameState.forEach(e => e !== null)){
+      return true;
+    }
+  }
+
+  const getId = (currentId) => {
+    setId(currentId);
+  }
+
+  //value comes up from square
+  const updateGameState = (id, value) => {
+    const nextGameState = [...gameState];
+    if (!value) {
+      value = "X"
+    }
+    // We need to do a null check first using value
+    nextGameState[id] = currentPlayer;
+    const gameIsWon = checkIsGameWon(nextGameState);
+    const gameIsOver = checkIsGameOver(nextGameState);
+
+    if (!gameIsOver && !gameIsWon) {
+      setGameStatus(nextGameState);
+      changeCurrentPlayer();
+    } 
+    
+  };
+  const onClick = () => {
+    console.log('hi');
+    updateGameState();
+  }
+  return (
+    <div>
+      <Board onClick={onClick} id={getId} gameState={gameState} value={currentPlayer} />
+    </div>
+  )
+
+  //     if(gameOverBool === true){
+  //     return (
+  //       <div>
+  //         {winMessage}
+  //         <br/><br/><br/><br/>
+  //       <button
+  //         onClick={handleGameOver}
+  //       >Play Again
+  //       </button>
+  //       </div>
+  //     )
   //   }
-
-  //   checkOuterArray(currentGameState);
-  // }
-  // //value comes up from square
-  // const updateGameState = (id, value) => {
-  //   const nextGameState = [...gameState];
-  //   if(!value){
-  //     value = "X"
-  //   }
-  //   // We need to do a null check first using value
-  //   nextGameState[id] = currentPlayer;
-  //   const gameIsWon = checkIsGameWon(nextGameState);
-  //   const gameIsOver = checkIsGameOver(nextGameState);
-
-  //   if (!gameIsOver && !gameIsWon) {
-  //     setGameStatus(nextGameState);
-  //     changeCurrentPlayer();
-  //   } else {
-  //     setGameOverBool(gameIsOver);
-  //   }
-  // };
-
-    return (
-      <div>
-        <Board onClick ={onClick} id={id} gameState={gameState}/>
-      </div>
-    )
- 
-//     if(gameOverBool === true){
-//     return (
-//       <div>
-//         {winMessage}
-//         <br/><br/><br/><br/>
-//       <button
-//         onClick={handleGameOver}
-//       >Play Again
-//       </button>
-//       </div>
-//     )
-//   }
-//  // checkGameOver();
-//   //if you can turn it into a variable you can put it between the {curly braces}
-//   return (
-//     <div>
-//       {currentPlayer === 'X' ? (
-//         <div>
-//           <p>This is so cool</p>
-//           Yay X
-//           <p>This is so coooooooo</p>
-//         </div>
-//       ) : (
-//         <p>Boo O</p>
-//       )}
-//       <h1>Current player is {currentPlayer === 'X' ? 'The Eks' : 'The Ohhhh'}</h1>
-//       <Board
-//         reportClickedSquare={updateGameState}
-//         // updateGameState={setGameStatus}
-//         currentGameState={gameState}
-//         />
-//         <br/>
-//         <br/>
-//     </div>
-//   )
+  //  // checkGameOver();
+  //   //if you can turn it into a variable you can put it between the {curly braces}
+  //   return (
+  //     <div>
+  //       {currentPlayer === 'X' ? (
+  //         <div>
+  //           <p>This is so cool</p>
+  //           Yay X
+  //           <p>This is so coooooooo</p>
+  //         </div>
+  //       ) : (
+  //         <p>Boo O</p>
+  //       )}
+  //       <h1>Current player is {currentPlayer === 'X' ? 'The Eks' : 'The Ohhhh'}</h1>
+  //       <Board
+  //         reportClickedSquare={updateGameState}
+  //         // updateGameState={setGameStatus}
+  //         currentGameState={gameState}
+  //         />
+  //         <br/>
+  //         <br/>
+  //     </div>
+  //   )
   // return (
   //   <div>
   //     {currentPlayer === 'X' ? (
