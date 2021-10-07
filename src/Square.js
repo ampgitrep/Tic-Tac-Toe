@@ -1,28 +1,34 @@
+//who am i and what is my value? and how do I report interactions up to my boss
 import { useState } from "react";
 
-
-//who am i and what is my value? and how do I report interactions up to my boss
-const Square = ({ id, value, onClick }) => {
-  const handleClick = () => {
-    onClick();
+const Square = ({ id, player, value, onClick, gameResetClick, gameOver }) => {
+  const [disabled, setDisabled] = useState(false);
+  
+  const reset = () => {
+    gameResetClick();
   }
   
+  const handleClick = () => {
+    onClick(id, player);
+    setDisabled(true);
+  }
   
   return (
-
+    <div>
+      {gameOver === true ? (
         <button
-          
-          onClick={handleClick}
-          id={id}
-          style={{
-            paddingTop: '22px',
-            paddingBottom: '22px',
-            paddingLeft: '22px',
-            paddingRight: '22px',
-          }}
-        >{value}{id}
-        </button> 
-       
+        onClick={reset}>Play again?</button>
+      ) : (  
+    <button
+      onClick={handleClick}
+      disabled={disabled}
+      style={{
+        width: '40px',
+        height: '40px',
+      }}
+    >{value}
+    </button>)}
+    </div>
   )
 }
 
